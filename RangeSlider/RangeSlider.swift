@@ -9,10 +9,10 @@
 import UIKit
 import QuartzCore
 
-class RangeSliderTrackLayer: CALayer {
+public class RangeSliderTrackLayer: CALayer {
     weak var rangeSlider: RangeSlider?
     
-    override func draw(in ctx: CGContext) {
+    override public func draw(in ctx: CGContext) {
         guard let slider = rangeSlider else {
             return
         }
@@ -36,7 +36,7 @@ class RangeSliderTrackLayer: CALayer {
     }
 }
 
-class RangeSliderThumbLayer: CALayer {
+public class RangeSliderThumbLayer: CALayer {
     
     var highlighted: Bool = false {
         didSet {
@@ -56,12 +56,12 @@ class RangeSliderThumbLayer: CALayer {
         }
     }
     
-    override func draw(in ctx: CGContext) {
+    override public func draw(in ctx: CGContext) {
         guard let slider = rangeSlider else {
             return
         }
         
-        let thumbFrame = bounds.insetBy(dx: 2.0, dy: 2.0)
+        let thumbFrame = bounds.insetBy(dx: 0.3, dy: 0.3)
         let cornerRadius = thumbFrame.height * slider.curvaceousness / 2.0
         let thumbPath = UIBezierPath(roundedRect: thumbFrame, cornerRadius: cornerRadius)
         
@@ -113,6 +113,24 @@ public class RangeSlider: UIControl {
         }
     }
     
+    //MARK: FOR ME
+    public var trackLayerForMe : RangeSliderTrackLayer {
+        get{
+            return self.trackLayer
+        }
+    }
+    
+    public var lowerThumbLayerForMe : RangeSliderThumbLayer {
+        get{
+            return self.lowerThumbLayer
+        }
+    }
+    public var upperThumbLayerForMe : RangeSliderThumbLayer {
+        get{
+            return self.upperThumbLayer
+        }
+    }
+    
     @IBInspectable public var upperValue: Double = 0.8 {
         didSet {
             if upperValue > maximumValue {
@@ -137,6 +155,7 @@ public class RangeSlider: UIControl {
             trackLayer.setNeedsDisplay()
         }
     }
+    
     
     @IBInspectable public var thumbTintColor: UIColor = UIColor.white {
         didSet {
@@ -176,14 +195,15 @@ public class RangeSlider: UIControl {
     }
     
     fileprivate var previouslocation = CGPoint()
-    
-    fileprivate let trackLayer = RangeSliderTrackLayer()
-    fileprivate let lowerThumbLayer = RangeSliderThumbLayer()
-    fileprivate let upperThumbLayer = RangeSliderThumbLayer()
+    fileprivate let trackLayer      = RangeSliderTrackLayer()
+    let lowerThumbLayer = RangeSliderThumbLayer()
+    let upperThumbLayer = RangeSliderThumbLayer()
     
     fileprivate var thumbWidth: CGFloat {
         return CGFloat(bounds.height)
+        
     }
+    
     
     override public var frame: CGRect {
         didSet {
@@ -226,7 +246,7 @@ public class RangeSlider: UIControl {
         CATransaction.begin()
         CATransaction.setDisableActions(true)
         
-        trackLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height/3)
+        trackLayer.frame = bounds.insetBy(dx: 0.0, dy: bounds.height/2.5)
         trackLayer.setNeedsDisplay()
         
         let lowerThumbCenter = CGFloat(positionForValue(lowerValue))
