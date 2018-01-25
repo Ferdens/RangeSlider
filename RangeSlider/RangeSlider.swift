@@ -61,7 +61,7 @@ public class RangeSliderThumbLayer: CALayer {
             return
         }
         
-        let thumbFrame = bounds.insetBy(dx: 0.9, dy: 0.9)
+        let thumbFrame = bounds.insetBy(dx: 0.1, dy: 0.1)
         let cornerRadius = thumbFrame.height * slider.curvaceousness / 2.0
         let thumbPath = UIBezierPath(roundedRect: thumbFrame, cornerRadius: cornerRadius)
         
